@@ -29,13 +29,22 @@ class ModeSelector(MycroftSkill):
 			self.bus.emit(Message("skillmanager.keep", {'skill': "mode-selector-skill"}))
 			time.sleep(1.5)
 			self.bus.emit(Message("skillmanager.activate", {'skill': "fallback-chatgpt3-skill.joaogmauricio"}))
+			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-naptime.mycroftai"}))
 		elif 'normal' in type:
 			for skill in self._initial_skills:
 #				self.debug.error(skill)
 				self.bus.emit(Message("skillmanager.activate", {'skill': skill}))
 		elif any(t in type for t in ['private', 'privacy', 'offline', 'stealth']):
-			# TODO: change STT to offline + disable all skills but the local ones
+			# disable all skills but local ones
 			self.bus.emit(Message("skillmanager.keep", {'skill': "mode-selector-skill"}))
+			time.sleep(1.5)
+			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-naptime.mycroftai"}))
+			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-volume.mycroftai"}))
+			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-timer.mycroftai"}))
+			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-alarm.mycroftai"}))
+			self.bus.emit(Message("skillmanager.activate", {'skill': "roomba-master-skill"}))
+
+			# TODO: change STT to offline
 
 		self.speak_dialog('mode.changed', data={
 			'type': type
