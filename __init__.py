@@ -30,6 +30,7 @@ class ModeSelector(MycroftSkill):
 			time.sleep(1.5)
 			self.bus.emit(Message("skillmanager.activate", {'skill': "fallback-chatgpt3-skill.joaogmauricio"}))
 			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-naptime.mycroftai"}))
+			self.bus.emit(Message("skillmanager.activate", {'skill': "fallback-unknown.mycroftai"}))
 		elif 'normal' in type:
 			for skill in self._initial_skills:
 #				self.debug.error(skill)
@@ -43,6 +44,7 @@ class ModeSelector(MycroftSkill):
 			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-timer.mycroftai"}))
 			self.bus.emit(Message("skillmanager.activate", {'skill': "mycroft-alarm.mycroftai"}))
 			self.bus.emit(Message("skillmanager.activate", {'skill': "roomba-master-skill"}))
+			self.bus.emit(Message("skillmanager.activate", {'skill': "fallback-unknown.mycroftai"}))
 
 			# TODO: change STT to offline
 
