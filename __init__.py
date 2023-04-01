@@ -5,6 +5,7 @@ import time
 class ModeSelector(MycroftSkill):
 
 	_initial_skills = []
+	_current_mode = "normal"
 
 	def __init__(self):
 		MycroftSkill.__init__(self)
@@ -13,6 +14,9 @@ class ModeSelector(MycroftSkill):
 		self.register_entity_file('type.entity')
 		self.bus.once('mycroft.skills.list', self.get_active_skills)
 		self.bus.emit(Message("skillmanager.list"))
+		time.sleep(2)
+		if self._current_mode == "normal":
+			self.bus.emit(Message("skillmanager.deactivate", {'skill': "fallback-chatgpt3-skill.joaogmauricio"}))
 
 	def get_active_skills(self, message):
 		for key, value in message.data.items():
@@ -48,9 +52,22 @@ class ModeSelector(MycroftSkill):
 
 			# TODO: change STT to offline
 
+		self._current_mode = type
+
 		self.speak_dialog('mode.changed', data={
 			'type': type
 		})
+
+
+	@intent_handler('get.current.mode.intent')
+	def handle_get_current_mode(self, message):
+		self.speak_dialog('current.mode', data={
+			'type': self._current_mode
+		})
+
+	@intent_handler('list.modes.intent')
+	def handle_list_modes(self, message):
+		self.speak_dialog('list.modes')
 
 
 def create_skill():
